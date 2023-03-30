@@ -1,9 +1,14 @@
+import { BrowserRouter as Router } from "react-router-dom";
 import "./App.css";
-import Sidebar from "./components/Sidebar";
+import SideBar from "./components/Sidebar";
+import Expense from "./components/Expense";
 
 function App() {
   return <>
-  <Sidebar/>
+  <Router>
+  <SideBar/>
+  <Expense/>
+  </Router>
   </>;
 }
 

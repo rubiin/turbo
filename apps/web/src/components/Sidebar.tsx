@@ -1,47 +1,45 @@
-import React from 'react'
-import sideBarStyles from './Sidebar.module.css'
+import { Link, useLocation } from 'react-router-dom'
 import profileImage from '../assets/png/samantha.png'
-import { Link } from 'react-router-dom'
+import sideBarStyles from './Sidebar.module.scss'
 
-function Sidebar() {
+
+const sideBarRoutes = [
+  "dashboard","expenses","wallet","summary","account","settings"
+]
+
+function SideBar() {
+  const location = useLocation();
   return (
     <>
-    <aside className={sideBarStyles.sidebar}>
-      <div className={sideBarStyles.content}>
+    <aside className={sideBarStyles.sideBar}>
+      <div className={sideBarStyles.sideBarContent}>
       <div className={sideBarStyles.profileDetails}>
-        <div className={sideBarStyles.profileImage}>
+        <div className={sideBarStyles.profileImageDiv}>
           <img src={profileImage} alt='profile image'/>
-          <span className={sideBarStyles.notifications}>4</span>
+          <p className={sideBarStyles.notifications}>4</p>
         </div>
-      </div>
       <p className={sideBarStyles.userName}>Samantha</p>
       <p className={sideBarStyles.userEmail}>samantha@gmail.com</p>
       </div>
       <nav className={sideBarStyles.sideBarNav}>
         <ul>
-          <li>
-            <Link to="/">Dashboard</Link>
+         {
+          sideBarRoutes.map((el,index)=>
+            <li className={sideBarStyles.sideBarNavItem} key={index}>
+            <Link  className={
+              location.pathname === `/${el}`?
+              sideBarStyles.sideBarNavLinkActive :
+              sideBarStyles.sideBarNavLink
+            } to={`/${el}`}>{el.toUpperCase()}</Link>
           </li>
-          <li>
-            <Link to="/">Dashboard</Link>
-          </li>
-          <li>
-            <Link to="/">Dashboard</Link>
-          </li>
-          <li>
-            <Link to="/">Dashboard</Link>
-          </li>
-          <li>
-            <Link to="/">Dashboard</Link>
-          </li>
-          <li>
-            <Link to="/">Dashboard</Link>
-          </li>
+          )
+         }
         </ul>
       </nav>
+      </div>
     </aside>
     </>
   )
 }
 
-export default Sidebar
+export default SideBar
