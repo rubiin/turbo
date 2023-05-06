@@ -1,0 +1,79 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String         @id @default(cuid())
+  username    String         @unique
+  email       String         @unique
+  password    String
+  description String         @default("")
+  created_at  DateTime       @default(now())
+  followers   UserFollower[] @relation("followers")
+  followings  UserFollower[] @relation("followings")
+  posts_liked PostLike[]
+  posts       Post[]
+  stories     Story[]
+  Session     Session[]
+}
+
+model Post {
+  id         String     @id @default(cuid())
+  caption    String
+  user_id    String
+  user       User       @relation(fields: [user_id], references: [id])
+  liked_bys  PostLike[]
+  created_at DateTime   @default(now())
+}
+
+model Story {
+  id         String   @id @default(cuid())
+  caption    String
+  user_id    String
+  user       User     @relation(fields: [user_id], references: [id])
+  created_at DateTime @default(now())
+}
+
+model Image {
+  id            Int    @id @default(autoincrement())
+  type          String
+  url           String
+  associated_id String
+  sequence      Int
+}
+
+model UserFollower {
+  user_id     String
+  user        User     @relation("followers", fields: [user_id], references: [id])
+  follower_id String
+  follower    User     @relation("followings", fields: [follower_id], references: [id])
+  created_at  DateTime @default(now())
+
+  @@id([user_id, follower_id])
+}
+
+model PostLike {
+  user_id    String
+  user       User     @relation(fields: [user_id], references: [id])
+  post_id    String
+  post       Post     @relation(fields: [post_id], references: [id])
+  created_at DateTime @default(now())
+
+  @@id([user_id, post_id])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  user_id      String
+  expires      DateTime
+  user         User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+}
