@@ -4,12 +4,14 @@ import SideBar from "./components/Sidebar";
 import Expense from "./components/ExpenseCard";
 
 function App() {
-  return <>
-  <Router>
-  <SideBar/>
-  <Expense/>
-  </Router>
-  </>;
+  return (
+    <>
+      <Router>
+        <SideBar />
+        <Expense />
+      </Router>
+    </>
+  );
 }
 
 export default App;
